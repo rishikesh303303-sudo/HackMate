@@ -1,0 +1,17 @@
+# 📦 Core Dependency Matrix
+node_modules/
+
+.env
+.env.backend
+config.env
+
+# 📈 Log Files & Diagnostics
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 💻 System Files
+.vscode/
+.DS_Store
