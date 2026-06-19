@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
+const User = require('../models/user');
 const Notification = require('../models/Notification'); 
 
 // 💾 1. Profile Persistence Engine (Save endpoint)

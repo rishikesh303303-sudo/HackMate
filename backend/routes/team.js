@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Team = require('../models/Team');
-const User = require('../models/User');
+const User = require('../models/user');
 const mongoose = require('mongoose');
 
 // 🔍 1. FETCH TEAM BY USER ID
