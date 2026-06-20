@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700&family=Fraunces:ital,opsz,wght=0,9..144,700;1,9..144,600;1,9..144,700&family=Space+Grotesk:wght=500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,700;1,9..144,600;1,9..144,700&family=Space+Grotesk:wght@500;700&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -41,36 +41,6 @@ const styles = `
   .nav-right { display:flex;align-items:center;gap:1.2rem; }
   .nav-cta { background: transparent; color: var(--cream); border: 1px solid rgba(245,240,232,0.2); cursor:pointer; padding:0.65rem 1.6rem; border-radius:100px; font-family: var(--font-sans); font-size:0.85rem; font-weight:600; letter-spacing:0.02em; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); background-image: linear-gradient(rgba(245,240,232,0.03), rgba(245,240,232,0.01)); }
   .nav-cta:hover { color: var(--ink); background: var(--cream); border-color: var(--cream); box-shadow: 0 4px 24px rgba(245,240,232,0.15); transform: translateY(-1px); }
-
-  /* HAMBURGER */
-  .hamburger { width:40px;height:40px;border-radius:50%;border:1px solid rgba(245,240,232,0.1); background:rgba(245,240,232,0.03); backdrop-filter:blur(12px); cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px; transition: all 0.2s; }
-  .hamburger:hover { border-color:rgba(245,240,232,0.25); background:rgba(245,240,232,0.08); }
-  .hb-line { width:14px;height:1.5px;background:rgba(245,240,232,0.85);border-radius:2px; transition:transform 0.38s cubic-bezier(0.4,0,0.2,1),opacity 0.25s,width 0.3s; transform-origin:center; }
-  .hamburger.open .hb-line:nth-child(1) { transform:translateY(5.5px) rotate(45deg); }
-  .hamburger.open .hb-line:nth-child(2) { opacity:0;transform:scaleX(0); }
-  .hamburger.open .hb-line:nth-child(3) { transform:translateY(-5.5px) rotate(-45deg); }
-
-  /* SLIDE PANEL */
-  .panel-overlay { position:fixed;inset:0;z-index:98;background:rgba(0,0,0,0.55);backdrop-filter:blur(6px); opacity:0;pointer-events:none;transition:opacity 0.4s; }
-  .panel-overlay.open { opacity:1;pointer-events:all; }
-  .menu-panel { position:fixed;top:0;right:0;bottom:0;width:340px;z-index:99; background:rgba(9,9,14,0.98);backdrop-filter:blur(40px); border-left:1px solid rgba(245,240,232,0.07); transform:translateX(100%);transition:transform 0.52s cubic-bezier(0.4,0,0.2,1); display:flex;flex-direction:column;justify-content:center;padding:2.5rem 2rem; }
-  .menu-panel.open { transform:translateX(0); }
-
-  .menu-label { font-family: var(--font-sans);font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,240,232,0.18);margin-bottom:2.5rem;padding-left:0.25rem; }
-
-  .menu-item { display:flex;align-items:center;gap:1.1rem; padding:1.5rem 0;border-bottom:1px solid rgba(245,240,232,0.05); text-decoration:none;cursor:pointer;position:relative;overflow:hidden; transform:translateX(50px);opacity:0;transition:transform 0.5s cubic-bezier(0.4,0,0.2,1),opacity 0.5s; }
-  .menu-panel.open .menu-item:nth-child(2) { transform:translateX(0);opacity:1;transition-delay:0.1s; }
-  .menu-panel.open .menu-item:nth-child(3) { transform:translateX(0);opacity:1;transition-delay:0.18s; }
-  .menu-item:last-child { border-bottom:none; }
-
-  .menu-icon-wrap { width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0;border:1px solid rgba(245,240,232,0.07);background:rgba(245,240,232,0.03);transition:border-color 0.2s,background 0.2s; }
-  .menu-item:hover .menu-icon-wrap { border-color:rgba(245,240,232,0.14);background:rgba(245,240,232,0.06); }
-  .menu-item-body { flex:1;min-width:0; }
-  .menu-item-title { font-family: var(--font-display);font-weight:700;font-size:1.1rem;letter-spacing:-0.01em;color:var(--cream);margin-bottom:0.2rem;display:block;transition:background 0.2s; }
-  .menu-panel.open .menu-item:hover .menu-item-title { background:linear-gradient(90deg,var(--gold),var(--amber)); -webkit-background-clip:text;-webkit-text-fill-color:transparent; }
-  .menu-item-desc { font-family: var(--font-sans);font-size:0.72rem;color:rgba(245,240,232,0.28);font-weight:400;letter-spacing:0.01em; }
-  .menu-arrow { color:rgba(245,240,232,0.2);font-size:0.9rem;opacity:0;transform:translateX(-6px);transition:opacity 0.2s,transform 0.2s; }
-  .menu-item:hover .menu-arrow { opacity:1;transform:translateX(0); }
 
   /* HERO & HEADINGS NO-OVERLAP FIX */
   .hero { position:relative;z-index:1;min-height:100vh; display:flex;flex-direction:column;align-items:center;justify-content:center; padding:9rem 2rem 4rem;text-align:center; }
@@ -159,6 +129,41 @@ const styles = `
   .footer a { color:rgba(245,240,232,0.2);text-decoration:none; transition: color 0.2s; }
   .footer a:hover { color: rgba(245,240,232,0.5); }
   .footer-links { display:flex;gap:1.5rem; }
+
+  /* 📱 MOBILE RESPONSIVE EXTENSIONS ONLY */
+  @media (max-width: 768px) {
+    .navbar { padding: 1rem 2rem !important; }
+    .hero { padding: 8rem 1rem 3rem !important; }
+    .hero-title { line-height: 1.25 !important; }
+    .hero-title .line-2 { padding-bottom: 0.1rem !important; }
+    .hero-title .line-italic { margin-top: 0.2rem !important; }
+    .hero-actions { flex-direction: column !important; width: 100% !important; max-width: 320px !important; margin: 0 auto !important; gap: 0.8rem !important; }
+    .btn-primary, .btn-secondary { width: 100% !important; justify-content: center !important; padding: 0.8rem !important; }
+    
+    .section { padding: 4rem 1.2rem !important; }
+    .steps-grid { grid-template-columns: 1fr !important; border-radius: 16px !important; }
+    .step-card { border-right: none !important; border-bottom: 1.5px solid rgba(245,240,232,0.06) !important; padding: 2rem 1.5rem !important; }
+    .step-card:last-child { border-bottom: none !important; }
+    .step-number { font-size: 3.5rem !important; margin-bottom: 0.8rem !important; }
+    
+    .bento { grid-template-columns: 1fr !important; grid-auto-rows: auto !important; gap: 12px !important; }
+    .bc-wide, .bc-narrow, .bc-third { grid-column: span 12 !important; }
+    .bento-card { padding: 1.5rem !important; border-radius: 16px !important; min-height: 140px !important; }
+    .bento-visual { font-size: 2.2rem !important; right: 1rem !important; bottom: 1rem !important; }
+    
+    .skills-cloud { gap: 0.5rem !important; }
+    .skill-tag { padding: 0.4rem 0.9rem !important; font-size: 0.75rem !important; }
+    
+    .testimonials { grid-template-columns: 1fr !important; gap: 12px !important; }
+    .tcard { padding: 1.4rem !important; border-radius: 16px !important; }
+    .tcard-quote { font-size: 1rem !important; line-height: 1.5 !important; }
+    
+    .cta-inner { padding: 3.5rem 1.5rem !important; border-radius: 24px !important; }
+    .cta-inner .btn-primary { width: 100% !important; max-width: 280px !important; }
+    
+    .footer { padding: 2rem !important; flex-direction: column !important; gap: 1.2rem !important; text-align: center !important; }
+    .footer-links { justify-content: center !important; }
+  }
 `;
 
 const steps = [
@@ -190,7 +195,6 @@ const testimonials = [
 ];
 
 export default function Landing() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -219,50 +223,12 @@ export default function Landing() {
         <div className="grid-overlay" /><div className="noise" />
       </div>
 
-      {/* Menu overlay */}
-      <div className={`panel-overlay${menuOpen ? ' open' : ''}`} onClick={() => setMenuOpen(false)} />
-
-      {/* Slide panel */}
-      <div className={`menu-panel${menuOpen ? ' open' : ''}`}>
-        <div className="menu-label">Navigation</div>
-        
-        {/* 1. Hackathons Option */}
-        <div className="menu-item" onClick={() => { setMenuOpen(false); navigate('/hackathons'); }}>
-          <div className="menu-icon-wrap">🏆</div>
-          <div className="menu-item-body">
-            <span className="menu-item-title">Hackathons</span>
-            <span className="menu-item-desc">Explore active ecosystem timelines</span>
-          </div>
-          <span className="menu-arrow">→</span>
-        </div>
-
-        {/* 2. Get Started Option */}
-        <div className="menu-item" onClick={() => { setMenuOpen(false); navigate('/auth'); }}>
-          <div className="menu-icon-wrap">⚡</div>
-          <div className="menu-item-body">
-            <span className="menu-item-title">Get Started</span>
-            <span className="menu-item-desc">Join the algorithmic matchmaking cluster node</span>
-          </div>
-          <span className="menu-arrow">→</span>
-        </div>
-      </div>
-
       <div className="landing">
         {/* Navbar */}
         <nav className="navbar">
           <div className="nav-logo">HackMate</div>
           <div className="nav-right">
-            {/* 🎯 Hackathons, Notifications, and Profile Node elements completely replaced with clean Auth redirect CTA */}
             <button className="nav-cta" onClick={() => navigate('/auth')}>Get Started</button>
-            <button
-              className={`hamburger${menuOpen ? ' open' : ''}`}
-              onClick={() => setMenuOpen(o => !o)}
-              aria-label="Menu"
-            >
-              <span className="hb-line" />
-              <span className="hb-line" />
-              <span className="hb-line" />
-            </button>
           </div>
         </nav>
 

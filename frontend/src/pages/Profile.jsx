@@ -38,7 +38,7 @@ const styles = `
   .identity-cluster { display: flex; align-items: center; gap: 1.8rem; }
   
   /* Avatar Upload UI */
-  .avatar-uploader { width: 90px; height: 90px; border-radius: 24px; background: rgba(245,240,232,0.02); border: 1px dashed rgba(245,240,232,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; overflow: hidden; transition: 0.2s; }
+  .avatar-uploader { width: 90px; height: 90px; border-radius: 24px; background: rgba(245,240,232,0.02); border: 1px dashed rgba(245,240,232,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; overflow: hidden; transition: 0.2s; flex-shrink: 0; }
   .avatar-uploader:hover { border-color: var(--gold); background: rgba(245,240,232,0.04); }
   .avatar-uploader img { width: 100%; height: 100%; object-fit: cover; }
   .avatar-uploader span { font-size: 0.65rem; color: rgba(245,240,232,0.4); text-transform: uppercase; font-weight: 600; margin-top: 0.2rem; }
@@ -63,12 +63,11 @@ const styles = `
   .field-box { display: flex; flex-direction: column; gap: 0.4rem; }
   .field-box.full-width { grid-column: span 2; }
   .field-box label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(245,240,232,0.4); font-weight: 600; }
-  .text-input { background: rgba(245,240,232,0.02); border: 1px solid rgba(245,240,232,0.08); border-radius: 14px; padding: 0.8rem 1.2rem; color: var(--cream); font-family: var(--font-sans); font-size: 0.92rem; transition: 0.2s; }
+  .text-input { background: rgba(245,240,232,0.02); border: 1px solid rgba(245,240,232,0.08); border-radius: 14px; padding: 0.8rem 1.2rem; color: var(--cream); font-family: var(--font-sans); font-size: 0.92rem; transition: 0.2s; width: 100%; }
   .text-input:focus { outline: none; border-color: var(--teal); }
 
   /* Role Grid Selector */
   .role-selection-matrix { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; }
-  @media (max-width: 768px) { .role-selection-matrix { grid-template-columns: 1fr 1fr; } .input-matrix { grid-template-columns: 1fr; .field-box.full-width { grid-column: span 1; } } .span-8, .span-4 { grid-column: span 12; } }
   .role-toggle-node { background: rgba(245,240,232,0.01); border: 1px solid rgba(245,240,232,0.04); border-radius: 16px; padding: 1.2rem; text-align: center; cursor: pointer; transition: 0.2s; }
   .role-toggle-node:hover { border-color: rgba(245,240,232,0.12); }
   .role-toggle-node.selected { border-color: var(--gold); background: rgba(212,168,67,0.03); }
@@ -89,8 +88,8 @@ const styles = `
 
   /* Toggle Switches Layout */
   .switch-deck { display: flex; flex-direction: column; gap: 1.2rem; }
-  .toggle-row-item { display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; color: rgba(245,240,232,0.8); }
-  .switch { position: relative; display: inline-block; width: 44px; height: 22px; }
+  .toggle-row-item { display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; color: rgba(245,240,232,0.8); gap: 1rem; }
+  .switch { position: relative; display: inline-block; width: 44px; height: 22px; flex-shrink: 0; }
   .switch input { opacity: 0; width: 0; height: 0; }
   .slider { position: absolute; cursor: pointer; inset: 0; background-color: rgba(245,240,232,0.1); transition: .3s; border-radius: 34px; border: 1px solid rgba(245,240,232,0.05); }
   .switch input:checked + .slider { background-color: var(--teal); }
@@ -99,19 +98,44 @@ const styles = `
 
   /* Sticky Bottom Save Dashboard Block */
   .sticky-action-dock { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,10,15,0.7); backdrop-filter: blur(20px); border-top: 1px solid rgba(245,240,232,0.05); padding: 1.2rem 2rem; z-index: 500; display: flex; justify-content: center; }
-  .dock-content { max-width: 1100px; width: 100%; display: flex; align-items: center; justify-content: space-between; }
+  .dock-content { max-width: 1100px; width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
   
   /* Save Button Custom Styles */
-  .btn-save-action { background: linear-gradient(135deg, var(--gold), var(--amber)); color: var(--ink); border: none; padding: 0.7rem 1.8rem; border-radius: 100px; font-weight: 700; font-size: 0.88rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+  .btn-save-action { background: linear-gradient(135deg, var(--gold), var(--amber)); color: var(--ink); border: none; padding: 0.7rem 1.8rem; border-radius: 100px; font-weight: 700; font-size: 0.88rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .btn-save-action:hover:not(:disabled) { box-shadow: 0 4px 20px rgba(212,168,67,0.3); }
   .btn-save-action:disabled { opacity: 0.6; cursor: not-allowed; background: #555; color: #aaa; }
   
-  .btn-shortcut-link { background: transparent; color: var(--cream); border: 1px solid rgba(245,240,232,0.15); padding: 0.7rem 1.6rem; border-radius: 100px; font-size: 0.85rem; font-weight: 600; cursor: pointer; text-decoration: none; }
+  .btn-shortcut-link { background: transparent; color: var(--cream); border: 1px solid rgba(245,240,232,0.15); padding: 0.7rem 1.6rem; border-radius: 100px; font-size: 0.85rem; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; }
   .btn-shortcut-link:hover { border-color: var(--cream); background: rgba(245,240,232,0.02); }
 
   /* Hacker Spinner Circle Element */
   .hacker-spinner { width: 14px; height: 14px; border: 2px solid var(--ink); border-top-color: transparent; border-radius: 50%; animation: rotate-spin 0.6s linear infinite; }
   @keyframes rotate-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+  /* 📱 MOBILE RESPONSIVE EXTENSIONS ONLY (Laptop grid configuration untouched) */
+  @media (max-width: 768px) {
+    .main-content { padding: 6rem 1rem 3rem !important; }
+    .profile-top-deck { flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 1.5rem !important; }
+    .identity-cluster { flex-direction: column !important; gap: 1rem !important; }
+    .profile-top-deck h1 { font-size: 1.8rem !important; }
+    .completion-metrics { width: 100% !important; min-width: unset !important; }
+    
+    .bento-form-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+    .span-4, .span-8, .span-12 { grid-column: span 12 !important; }
+    .form-card { padding: 1.5rem !important; border-radius: 20px !important; }
+    
+    .input-matrix { grid-template-columns: 1fr !important; gap: 1rem !important; }
+    .field-box.full-width { grid-column: span 1 !important; }
+    
+    .role-selection-matrix { grid-template-columns: repeat(2, 1fr) !important; gap: 0.6rem !important; }
+    .role-toggle-node { padding: 1rem 0.5rem !important; border-radius: 12px !important; }
+    .role-toggle-node h4 { font-size: 0.9rem !important; }
+    
+    .profile-edit-page { padding-bottom: 12rem !important; }
+    .sticky-action-dock { padding: 1rem !important; }
+    .dock-content { flex-direction: column-reverse !important; gap: 0.8rem !important; width: 100% !important; }
+    .btn-save-action, .btn-shortcut-link { width: 100% !important; padding: 0.65rem !important; font-size: 0.82rem !important; }
+  }
 `;
 
 const PRE_BUILT_SKILLS = [
@@ -151,7 +175,6 @@ export default function Profile() {
   const [toggleEmail, setToggleEmail] = useState(parsedUser?.enableEmailTransmissions ?? false);
 
   const [completionProgress, setCompletionProgress] = useState(0);
-
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
@@ -420,7 +443,6 @@ export default function Profile() {
       <footer className="sticky-action-dock">
         <div className="dock-content">
           <button className="btn-shortcut-link" onClick={() => navigate('/find-team')}>➔ Bypass to Find Squad</button>
-          
           
           <button 
             className="btn-save-action" 

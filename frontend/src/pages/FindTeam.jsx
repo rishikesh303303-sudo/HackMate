@@ -36,18 +36,23 @@ const styles = `
   .page-header h1 { font-family: var(--font-display); font-size: 2.6rem; font-weight: 700; color: var(--cream); }
   .page-header p { color: rgba(245,240,232,0.4); font-size: 0.95rem; margin-top: 0.3rem; }
 
-  .control-strip { display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: center; }
+  .control-strip { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
+  .search-row { display: flex; gap: 1rem; width: 100%; align-items: center; }
   .search-wrapper { position: relative; flex: 1; }
   .search-input { width: 100%; background: rgba(245,240,232,0.02); border: 1px solid rgba(245,240,232,0.08); border-radius: 100px; padding: 0.9rem 1.5rem 0.9rem 3rem; color: var(--cream); font-family: var(--font-sans); font-size: 0.95rem; transition: 0.3s; }
   .search-input:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 15px rgba(46,196,182,0.1); }
   .search-icon { position: absolute; left: 1.2rem; top: 50%; transform: translateY(-50%); color: rgba(245,240,232,0.3); font-size: 1rem; }
   
+  .ai-search-container { width: 100%; display: flex; gap: 0.8rem; align-items: center; background: rgba(124, 58, 237, 0.03); border: 1px dashed rgba(124, 58, 237, 0.25); padding: 0.8rem 1.2rem; border-radius: 16px; margin-top: 0.2rem; }
+  .ai-search-input { flex: 1; background: transparent; border: none; color: var(--cream); font-family: var(--font-sans); font-size: 0.9rem; }
+  .ai-search-input:focus { outline: none; }
+  .btn-ai-spark { background: linear-gradient(135deg, var(--violet), var(--teal)); color: white; border: none; padding: 0.5rem 1.2rem; border-radius: 100px; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; transition: 0.3s; }
+  .btn-ai-spark:hover { opacity: 0.9; box-shadow: 0 0 15px rgba(124, 58, 237, 0.4); }
+
   .sort-dropdown { background: rgba(245,240,232,0.02); border: 1px solid rgba(245,240,232,0.08); border-radius: 100px; padding: 0.9rem 1.5rem; color: var(--cream); cursor: pointer; font-size: 0.9rem; font-weight: 500; }
 
   .chips-container { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; align-items: center; text-align: left; }
   .results-counter { font-size: 0.85rem; color: rgba(245,240,232,0.4); font-weight: 500; margin-right: 1rem; }
-  .filter-chip { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(46,196,182,0.06); border: 1px solid rgba(46,196,182,0.2); color: var(--teal); padding: 0.3rem 0.9rem; border-radius: 100px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
-  .filter-chip span { color: rgba(245,240,232,0.4); font-weight: 400; font-size: 0.75rem; transition: 0.2s; }
 
   .workspace-layout { display: grid; grid-template-columns: 280px 1fr; gap: 2rem; text-align: left; }
 
@@ -100,20 +105,39 @@ const styles = `
   .modal-window { background: #0f0f17; border: 1px solid rgba(245,240,232,0.08); border-radius: 28px; padding: 2.2rem; max-width: 460px; width: 90%; text-align: left; }
   .modal-window h2 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.4rem; color: var(--cream); }
 
-  /* Notification Toast Alerts */
   .toast-layer { position: fixed; bottom: 2rem; right: 2rem; z-index: 9999; background: #0b251c; border: 1px solid #10b981; padding: 12px 24px; border-radius: 16px; color: #10b981; font-size: 14px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-`;
+  .loading-state { color: rgba(245,240,232,0.4); text-align: center; font-size: 1.1rem; padding: 3rem 0; width: 100%; }
 
-const INITIAL_HACKERS = [
-  { id: "d1", name: "Anubhav", college: "LNCT, Bhopal", role: "Backend Layer", skills: ["Node.js", "Express", "MongoDB", "Docker"], matchScore: 94, interests: 4, level: "Intermediate", remote: true },
-  { id: "d2", name: "Siddharth", college: "UIT RGPV", role: "UI/UX Visual", skills: ["Figma", "Tailwind", "Motion Design"], matchScore: 88, interests: 3, level: "Expert", remote: false },
-  { id: "d3", name: "Aman", college: "LNCT, Bhopal", role: "ML/AI Engine", skills: ["Python", "FastAPI", "PyTorch", "Vapi AI"], matchScore: 82, interests: 5, level: "Expert", remote: true }
-];
+  /* 📱 MOBILE RESPONSIVE EXTENSIONS ONLY (Triggers under 768px layout) */
+  @media (max-width: 768px) {
+    .page-header { text-align: center !important; }
+    .main-content { padding: 6rem 1rem 2rem !important; }
+    .page-header h1 { font-size: 2rem !important; }
+    .search-row { flex-direction: column !important; gap: 0.8rem !important; }
+    .sort-dropdown { width: 100% !important; padding: 0.8rem 1.2rem !important; }
+    .ai-search-container { flex-direction: column !important; align-items: stretch !important; gap: 0.8rem !important; border-radius: 12px !important; }
+    .btn-ai-spark { width: 100% !important; justify-content: center !important; }
+    .workspace-layout { grid-template-columns: 1fr !important; gap: 1.5rem !important; }
+    .filter-sidebar { padding: 1.2rem !important; border-radius: 16px !important; }
+    .filter-group { flex-direction: row !important; flex-wrap: wrap !important; gap: 0.8rem !important; }
+    .matrix-grid { grid-template-columns: 1fr !important; gap: 1.2rem !important; }
+    .match-node-card { padding: 1.2rem !important; border-radius: 16px !important; }
+    .node-identity h3 { font-size: 1.1rem !important; max-width: 170px !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; }
+    .node-identity p { max-width: 170px !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; }
+    .card-footer { flex-direction: column !important; align-items: flex-start !important; gap: 1rem !important; }
+    .action-group { width: 100% !important; }
+    .btn-outline, .btn-solid { flex: 1 !important; text-align: center !important; padding: 0.5rem 0.8rem !important; font-size: 0.75rem !important; }
+    .modal-window { padding: 1.5rem !important; border-radius: 20px !important; }
+    .toast-layer { left: 1rem !important; right: 1rem !important; bottom: 1rem !important; text-align: center !important; }
+  }
+`;
 
 export default function FindTeam() {
   const navigate = useNavigate();
-  const [hackers, setHackers] = useState(INITIAL_HACKERS);
+  const [hackers, setHackers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [aiQuery, setAiQuery] = useState("");
   const [selectedRole, setSelectedRole] = useState("All");
   const [isRemote, setIsRemote] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
@@ -131,29 +155,61 @@ export default function FindTeam() {
   useEffect(() => {
     const fetchLiveHackers = async () => {
       try {
-        const response = await API.get(`/api/profile/all-users?currentUserId=${currentUserId}`);
+        setLoading(true);
+        const response = await API.get(`/api/profile/suggest-team?currentUserId=${currentUserId}`);
         if (response.status === 200 && response.data.users) {
           const databaseUsers = response.data.users.map((user, idx) => ({
-            id: user._id || `live-${idx}`,
-            name: user.name,
+            id: user._id || user.id || `live-${idx}`,
+            name: user.name || "Anonymous Developer",
             college: user.college || "Global Cluster Node",
             role: user.role || "Frontend Node",
-            skills: user.skills && user.skills.length > 0 ? user.skills : ["React", "Node.js"],
-            matchScore: Math.floor(Math.random() * (98 - 72 + 1)) + 72,
-            interests: user.domains?.length || 3,
+            skills: user.skills && user.skills.length > 0 ? user.skills : ["React", "Tailwind CSS"],
+            matchScore: user.matchScore || Math.floor(Math.random() * (98 - 75 + 1)) + 75,
+            interests: user.interests || (user.domains?.length) || Math.floor(Math.random() * 5) + 1,
             level: user.experienceLevel || "Intermediate",
             remote: user.openToRemote ?? true
           }));
-
-          setHackers([...INITIAL_HACKERS, ...databaseUsers]);
+          setHackers(databaseUsers);
         }
       } catch (error) {
-        console.error("Failed to stream database network vectors:", error);
+        console.error("Failed to fetch developers vectors:", error);
+        showToast("Error linking database cluster streams.");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchLiveHackers();
   }, [currentUserId]);
+
+  const handleAiSearch = async () => {
+    if (!aiQuery.trim()) return;
+    try {
+      setLoading(true);
+      showToast("AI Matrix processing query strings...");
+      const response = await API.post('/api/profile/ai-search', { query: aiQuery });
+      if (response.status === 200 && response.data.users) {
+        const aiMatchedUsers = response.data.users.map((user, idx) => ({
+          id: user._id || `ai-${idx}`,
+          name: user.name,
+          college: user.college || "AI Scaled Node",
+          role: user.role || "Software Layer",
+          skills: user.skills && user.skills.length > 0 ? user.skills : ["React"],
+          matchScore: user.matchScore || 95, 
+          interests: user.domains?.length || 4,
+          level: user.experienceLevel || "Expert",
+          remote: user.openToRemote ?? true
+        }));
+        setHackers(aiMatchedUsers);
+        showToast("AI Semantic layers optimized!");
+      }
+    } catch (error) {
+      console.error("AI prompt parsing anomaly:", error);
+      showToast("AI Engine pipeline failure.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleConnectNode = async (targetHacker) => {
     try {
@@ -162,7 +218,6 @@ export default function FindTeam() {
         senderName: currentUserName,
         receiverId: targetHacker.id
       };
-      
       const response = await API.post('/api/profile/connect-node', payload);
       if (response.status === 201) {
         showToast(`Transmission vector locked! Invite sent to ${targetHacker.name} ✦`);
@@ -190,6 +245,7 @@ export default function FindTeam() {
 
   const clearFilters = () => {
     setSearch("");
+    setAiQuery("");
     setSelectedRole("All");
     setIsRemote(false);
   };
@@ -217,20 +273,38 @@ export default function FindTeam() {
           </header>
 
           <div className="control-strip">
-            <div className="search-wrapper">
-              <span className="search-icon">🔍</span>
+            <div className="search-row">
+              <div className="search-wrapper">
+                <span className="search-icon">🔍</span>
+                <input 
+                  type="text" 
+                  className="search-input" 
+                  placeholder="Search by name, college platform or specific tech keywords..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
+              <select className="sort-dropdown">
+                <option>Sort by: Match %</option>
+                <option>Recently Active</option>
+              </select>
+            </div>
+
+            {/* 🤖 ADVANCED SEARCH WITH AI INJECTED */}
+            <div className="ai-search-container">
+              <span style={{ fontSize: '1.1rem' }}>✨</span>
               <input 
                 type="text" 
-                className="search-input" 
-                placeholder="Search by name, college platform or specific tech keywords..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                className="ai-search-input" 
+                placeholder="Advance Search with AI: e.g., Need a MERN stack expert fluent in Socket.io who goes to LNCT..."
+                value={aiQuery}
+                onChange={(e) => setAiQuery(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleAiSearch()}
               />
+              <button className="btn-ai-spark" onClick={handleAiSearch}>
+                Parse AI Vector
+              </button>
             </div>
-            <select className="sort-dropdown">
-              <option>Sort by: Match %</option>
-              <option>Recently Active</option>
-            </select>
           </div>
 
           <div className="chips-container">
@@ -283,15 +357,16 @@ export default function FindTeam() {
 
             {/* Output Matrix Grid */}
             <section className="matrix-grid">
-              {filteredHackers.length > 0 ? (
+              {loading ? (
+                <div className="loading-state">Querying decentralized neural paths...</div>
+              ) : filteredHackers.length > 0 ? (
                 filteredHackers.map(hacker => (
                   <div className="match-card-wrapper" key={hacker.id}>
                     <div className="match-node-card">
                       <div>
                         <div className="card-top">
-                          {/* 🆕 PROFILE CLICK VISUAL EXTENSION ON HIT */}
                           <div className="profile-meta" onClick={() => setProfileModal(hacker)}>
-                            <div className="avatar-node">{hacker.name[0]}</div>
+                            <div className="avatar-node">{hacker.name ? hacker.name[0] : "?"}</div>
                             <div className="node-identity">
                               <h3>{hacker.name}</h3>
                               <p>{hacker.college}</p>
@@ -322,7 +397,6 @@ export default function FindTeam() {
                         </span>
                         <div className="action-group">
                           <button className="btn-outline" onClick={() => setProfileModal(hacker)}>View Profile</button>
-                          {/* 🆕 CONNECT TRIGGER DISPATCH ATTACHED */}
                           <button className="btn-solid" onClick={() => handleConnectNode(hacker)}>Connect ✦</button>
                         </div>
                       </div>
@@ -330,8 +404,8 @@ export default function FindTeam() {
                   </div>
                 ))
               ) : (
-                <div className="empty-state-frame">
-                  <h3>No Builders Matched</h3>
+                <div className="empty-state-frame" style={{ textAlign: 'center', gridColumn: '1/-1', padding: '3rem 0' }}>
+                  <h3 style={{ marginBottom: '1rem' }}>No Builders Matched</h3>
                   <button className="btn-solid" onClick={clearFilters}>Reset Filters Matrix</button>
                 </div>
               )}
@@ -341,7 +415,7 @@ export default function FindTeam() {
         </main>
       </div>
 
-      {/* 🆕 PROFILE PREVIEW CONSOLE WINDOW MODAL OVERLAY */}
+      {/* Profile Modal */}
       {profileModal && (
         <div className="modal-backdrop" onClick={() => setProfileModal(null)}>
           <div className="modal-window" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '500px' }}>
@@ -374,20 +448,20 @@ export default function FindTeam() {
         </div>
       )}
 
-      {/* Diagnostic Diagnostics Ring Modal */}
+      {/* Match Breakdown Modal */}
       {activeModal && (
         <div className="modal-backdrop" onClick={() => setActiveModal(null)}>
           <div className="modal-window" onClick={(e) => e.stopPropagation()}>
             <h2>Match Breakdown</h2>
-            <div className="breakdown-list">
+            <div className="breakdown-list" style={{ margin: '1.5rem 0' }}>
               {[{ label: "Core Technical Alignment", weight: activeModal.matchScore }, { label: "Availability Synchronization", weight: 90 }].map((item, idx) => (
-                <div className="breakdown-row" key={idx}>
-                  <div className="breakdown-meta">
+                <div className="breakdown-row" key={idx} style={{ marginBottom: '1rem' }}>
+                  <div className="breakdown-meta" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '0.3rem' }}>
                     <span>{item.label}</span>
                     <span style={{ color: 'var(--teal)' }}>{item.weight}%</span>
                   </div>
-                  <div className="progress-track">
-                    <div className="progress-fill" style={{ width: `${item.weight}%` }} />
+                  <div className="progress-track" style={{ height: '6px', background: 'rgba(245,240,232,0.05)', borderRadius: '10px', overflow: 'hidden' }}>
+                    <div className="progress-fill" style={{ width: `${item.weight}%`, height: '100%', background: 'var(--teal)' }} />
                   </div>
                 </div>
               ))}

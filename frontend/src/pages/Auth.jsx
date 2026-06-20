@@ -21,7 +21,7 @@ const styles = `
 
   .input-group { display: flex; flex-direction: column; gap: 0.4rem; text-align: left; margin-bottom: 1.2rem; }
   .input-group label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(245,240,232,0.4); font-weight: 600; }
-  .auth-field { background: rgba(245,240,232,0.02); border: 1px solid rgba(245,240,232,0.08); border-radius: 14px; padding: 0.8rem 1.2rem; color: #f5f0e8; font-size: 0.92rem; }
+  .auth-field { background: rgba(245,240,232,0.02); border: 1px solid rgba(245,240,232,0.08); border-radius: 14px; padding: 0.8rem 1.2rem; color: #f5f0e8; font-size: 0.92rem; width: 100%; }
   .auth-field:focus { outline: none; border-color: #2ec4b6; }
 
   .btn-auth-submit { background: #f5f0e8; color: #0a0a0f; border: none; padding: 0.8rem; border-radius: 100px; font-weight: 700; font-size: 0.9rem; cursor: pointer; width: 100%; transition: 0.2s; margin-top: 0.5rem; }
@@ -29,7 +29,15 @@ const styles = `
   
   .toggle-auth-mode { font-size: 0.82rem; color: rgba(245,240,232,0.4); margin-top: 1.5rem; cursor: pointer; }
   .toggle-auth-mode span { color: #d4a843; font-weight: 600; }
-  .google-btn-wrapper { display: flex; justify-content: center; margin-bottom: 0.5rem; }
+  .google-btn-wrapper { display: flex; justify-content: center; margin-bottom: 0.5rem; width: 100%; max-width: 100%; overflow: hidden; }
+
+  /* 📱 MOBILE RESPONSIVE EXTENSIONS ONLY (Laptop styles kept intact) */
+  @media (max-width: 768px) {
+    .auth-page-frame { padding: 2rem 1rem !important; }
+    .auth-bento-card { padding: 2rem 1.5rem !important; border-radius: 20px !important; }
+    .auth-bento-card h2 { font-size: 1.6rem !important; }
+    .auth-bento-card p { margin-bottom: 1.5rem !important; font-size: 0.82rem !important; }
+  }
 `;
 
 export default function Auth() {
@@ -38,27 +46,20 @@ export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
       const idToken = credentialResponse.credential;
 
-      
       const response = await API.post('/api/auth/google', {
         token: idToken
       });
 
       if (response.status === 200) {
-        
         localStorage.setItem("authToken", response.data.token);
         localStorage.setItem("userName", response.data.user.name);
-        
-        
         localStorage.setItem("userMeta", JSON.stringify(response.data.user));
         
         alert("Google Login Successful! Payload synchronized in MongoDB Atlas 🎉");
-        
-      
         navigate('/profile');
       }
     } catch (error) {
@@ -79,7 +80,6 @@ export default function Auth() {
 
     localStorage.setItem("authToken", "manual-session-token");
     localStorage.setItem("userName", firstWord); 
-    
     
     navigate('/dashboard');
   };
@@ -104,7 +104,7 @@ export default function Auth() {
               onError={handleGoogleError}
               theme="filled_dark"
               shape="pill"
-              width="360"
+              width="100%"
             />
           </div>
 
@@ -115,7 +115,7 @@ export default function Auth() {
               <label>Email Endpoint</label>
               <input type="email" className="auth-field" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@college.edu" />
             </div>
-            <div className="input-group" style={{ marginbottom: '1.8rem' }}>
+            <div className="input-group" style={{ marginBottom: '1.8rem' }}>
               <label>Security Hash Key (Password)</label>
               <input type="password" className="auth-field" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
             </div>

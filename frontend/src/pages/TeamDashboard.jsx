@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react'; // 🔥 useRef yahan add kar diya hai
 import API from '../api/axios';
 
 const styles = `
@@ -58,33 +58,48 @@ const styles = `
   .bar-track { height: 6px; background: rgba(245,240,232,0.03); border-radius: 100px; overflow: hidden; }
   .bar-fill { height: 100%; border-radius: 100px; }
 
-  .chat-panel { display: flex; flex-direction: column; justify-content: space-between; height: 100%; min-height: 250px; }
-  .chat-scroller { flex: 1; height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.8rem; padding-right: 0.5rem; }
-  .msg-bubble { font-size: 0.85rem; line-height: 1.4; background: rgba(245,240,232,0.02); padding: 0.6rem 0.9rem; border-radius: 14px; width: fit-content; max-width: 85%; }
+  .chat-panel { display: flex; flex-direction: column; justify-content: space-between; min-height: 280px; }
+  .chat-scroller { flex: 1; height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.8rem; padding-right: 0.5rem; }
+  .msg-bubble { font-size: 0.85rem; line-height: 1.4; background: rgba(245,240,232,0.02); padding: 0.6rem 0.9rem; border-radius: 14px; width: fit-content; max-width: 85%; border: 1px solid rgba(245,240,232,0.04); }
   .msg-meta { font-size: 0.7rem; color: rgba(245,240,232,0.3); margin-bottom: 0.2rem; display: flex; gap: 0.5rem; font-weight: 600; }
   .chat-input-row { display: flex; gap: 0.5rem; margin-top: 1rem; }
   .chat-box-field { flex: 1; background: rgba(245,240,232,0.02); border: 1px solid rgba(245,240,232,0.08); border-radius: 100px; padding: 0.6rem 1.2rem; color: var(--cream); font-size: 0.85rem; outline: none; }
   
+  .column-select-dropdown { background: rgba(245,240,232,0.03); border: 1px solid rgba(245,240,232,0.08); color: var(--cream); padding: 0.5rem 1rem; border-radius: 12px; font-size: 0.82rem; outline: none; cursor: pointer; font-family: var(--font-sans); }
+  .column-select-dropdown option { background: #0f0f17; color: var(--cream); }
+
   .kanban-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 0.5rem; }
   .kanban-column { background: rgba(245,240,232,0.01); border: 1px solid rgba(245,240,232,0.03); border-radius: 16px; padding: 1rem; min-height: 180px; }
   .column-header-text { font-family: var(--font-tech-head); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(245,240,232,0.4); margin-bottom: 0.8rem; display: block; }
-  .task-card-node { background: rgba(10,10,15,0.6); border: 1px solid rgba(245,240,232,0.05); border-radius: 12px; padding: 0.8rem; margin-bottom: 0.6rem; font-size: 0.82rem; cursor: pointer; }
+  
+  .task-card-node { background: rgba(10,10,15,0.6); border: 1px solid rgba(245,240,232,0.05); border-radius: 12px; padding: 0.8rem; margin-bottom: 0.6rem; font-size: 0.82rem; cursor: pointer; position: relative; }
+  .task-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
+  .task-card-header p { margin: 0; word-break: break-word; flex: 1; padding-right: 1.2rem; }
+  .task-delete-trigger { background: none; border: none; color: rgba(245,240,232,0.2); cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; position: absolute; right: 0.8rem; top: 0.8rem; width: 18px; height: 18px; border-radius: 4px; transition: 0.2s; }
+  .task-delete-trigger:hover { color: #ef4444; background: rgba(239, 68, 68, 0.08); }
 
   .btn-action { background: linear-gradient(135deg, var(--gold), var(--amber)); color: var(--ink); border: none; padding: 0.5rem 1.2rem; border-radius: 100px; font-weight: 700; font-size: 0.8rem; cursor: pointer; }
-  .btn-sm-outline { background: transparent; color: var(--cream); border: 1px solid rgba(245,240,232,0.1); padding: 0.4rem 1rem; border-radius: 100px; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
   .btn-reset-timeline { background: none; border: none; color: #ef4444; font-family: var(--font-tech-head); font-size: 0.68rem; font-weight: bold; letter-spacing: 0.05em; cursor: pointer; text-transform: uppercase; transition: 0.2s; margin-left: auto; }
   .btn-reset-timeline:hover { color: #f87171; }
 
   .config-input { background: rgba(245,240,232,0.02); border: 1px solid rgba(245,240,232,0.1); border-radius: 12px; padding: 0.5rem 0.8rem; color: var(--cream); font-size: 0.85rem; width: 100%; outline: none; margin-bottom: 0.8rem; }
   .config-input:focus { border-color: var(--teal); }
 
-  @media (max-width: 950px) { .span-8, .span-4 { grid-column: span 12; } .kanban-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 1024px) { .main-content { padding: 6rem 1rem 2rem !important; } }
+
+  @media (max-width: 950px) { 
+    .workspace-header { flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 1rem !important; }
+    .bento-matrix { grid-template-columns: 1fr !important; gap: 16px !important; }
+    .span-4, .span-8, .span-12 { grid-column: span 12 !important; } 
+    .form-card, .bento-card { padding: 1.5rem !important; border-radius: 20px !important; }
+    .kanban-grid { grid-template-columns: 1fr !important; gap: 12px !important; } 
+    .chat-input-row { flex-direction: column !important; gap: 0.6rem !important; }
+    .chat-input-row .btn-action { width: 100% !important; padding: 0.7rem !important; border-radius: 100px !important; }
+  }
 `;
 
 export default function TeamDashboard() {
   const currentUserName = localStorage.getItem("userName") || "Rishikesh303303";
-  
-  // ✅ FIXED: Hardcoded mock strings removed to avoid trigger mismatch on Mongoose layers
   const currentUserId = localStorage.getItem("userId") || "60c72b2f9b1d8e23a4111111"; 
 
   const [teamId, setTeamId] = useState(null);
@@ -98,12 +113,15 @@ export default function TeamDashboard() {
   const [targetDate, setTargetDate] = useState("");
   const [countdownText, setCountdownText] = useState("00 : 00 : 00");
 
-  const [chatMessages, setChatMessages] = useState([]);
-  const [newMsg, setNewMsg] = useState("");
   const [tasks, setTasks] = useState([]);
   const [taskInput, setTaskInput] = useState("");
+  const [targetColumn, setTargetColumn] = useState("todo");
 
-  // FETCH TEAM METRICS FROM Atlas
+  const [chatMessages, setChatMessages] = useState([]);
+  const [newMsg, setNewMsg] = useState("");
+
+  const chatScrollerRef = useRef(null);
+
   useEffect(() => {
     const fetchTeamProfileInstance = async () => {
       try {
@@ -130,7 +148,30 @@ export default function TeamDashboard() {
     fetchTeamProfileInstance();
   }, [currentUserId]);
 
-  // Countdown timer loop
+  useEffect(() => {
+    if (!hasTeam || !teamId) return;
+
+    const fetchLatestChatsOnly = async () => {
+      try {
+        const response = await API.get(`/api/team/my-team/${currentUserId}`);
+        if (response.status === 200 && response.data.success) {
+          setChatMessages(response.data.team.chatMessages || []);
+        }
+      } catch (e) {
+        console.log("Polling array link dropped.");
+      }
+    };
+
+    const pollInterval = setInterval(fetchLatestChatsOnly, 4000);
+    return () => clearInterval(pollInterval);
+  }, [hasTeam, teamId, currentUserId]);
+
+  useEffect(() => {
+    if (chatScrollerRef.current) {
+      chatScrollerRef.current.scrollTop = chatScrollerRef.current.scrollHeight;
+    }
+  }, [chatMessages]);
+
   useEffect(() => {
     if (!targetDate) {
       setCountdownText("00 : 00 : 00");
@@ -199,30 +240,11 @@ export default function TeamDashboard() {
     saveHackathonTimeline("", "", "");
   };
 
-  const sendChatMessage = async (e) => {
-    e.preventDefault();
-    if (!newMsg.trim()) return;
-    
-    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const updatedChats = [...chatMessages, {
-      id: Date.now(), user: currentUserName, text: newMsg.trim(), time: currentTime
-    }];
-
-    setChatMessages(updatedChats);
-    setNewMsg("");
-
-    try {
-      await API.post('/api/team/sync-chat', { teamId, chatMessages: updatedChats });
-    } catch (e) {
-      console.log("Comms save array sequence drop.");
-    }
-  };
-
   const handleAddTask = async (e) => {
     e.preventDefault();
     if (!taskInput.trim()) return;
 
-    const updatedTasks = [...tasks, { id: Date.now(), text: taskInput.trim(), status: "todo" }];
+    const updatedTasks = [...tasks, { id: Date.now(), text: taskInput.trim(), status: targetColumn }];
     setTasks(updatedTasks);
     setTaskInput("");
 
@@ -242,6 +264,37 @@ export default function TeamDashboard() {
       await API.post('/api/team/sync-tasks', { teamId, tasks: updatedTasks });
     } catch (e) {
       console.log("State shift persistence drop.");
+    }
+  };
+
+  const handleDeleteTask = async (e, id) => {
+    e.stopPropagation(); 
+    const updatedTasks = tasks.filter(t => t.id !== id);
+    setTasks(updatedTasks);
+
+    try {
+      await API.post('/api/team/sync-tasks', { teamId, tasks: updatedTasks });
+    } catch (e) {
+      console.log("Task removal vector synchronization failed.");
+    }
+  };
+
+  const sendChatMessage = async (e) => {
+    e.preventDefault();
+    if (!newMsg.trim()) return;
+    
+    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const updatedChats = [...chatMessages, {
+      id: Date.now(), user: currentUserName, text: newMsg.trim(), time: currentTime
+    }];
+
+    setChatMessages(updatedChats);
+    setNewMsg("");
+
+    try {
+      await API.post('/api/team/sync-chat', { teamId, chatMessages: updatedChats });
+    } catch (e) {
+      console.log("Comms save array sequence drop.");
     }
   };
 
@@ -297,7 +350,7 @@ export default function TeamDashboard() {
                 </div>
               </div>
 
-              <div className="bento-card span-4" style={{ display: 'flex', flexDirection: 'column', justifyInterests: 'space-between' }}>
+              <div className="bento-card span-4" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                     <span className="card-label" style={{ color: 'var(--amber)', margin: 0 }}>Target Hackathon Timeline</span>
@@ -358,9 +411,16 @@ export default function TeamDashboard() {
 
               <div className="bento-card span-8">
                 <span className="card-label">Sprint Task Board (Click card to advance status)</span>
-                <form onSubmit={handleAddTask} style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.2rem' }}>
+                <form onSubmit={handleAddTask} className="sprint-form-wrapper" style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.2rem', alignItems: 'center' }}>
                   <input type="text" className="chat-box-field" style={{ borderRadius: '12px', padding: '0.5rem 1rem' }} placeholder="Describe a task execution vector..." value={taskInput} onChange={(e) => setTaskInput(e.target.value)} />
-                  <button type="submit" className="btn-action" style={{ borderRadius: '12px', padding: '0.5rem 1.2rem' }}>+ Add Task</button>
+                  
+                  <select className="column-select-dropdown" value={targetColumn} onChange={(e) => setTargetColumn(e.target.value)}>
+                    <option value="todo">To Do</option>
+                    <option value="progress">In Progress</option>
+                    <option value="done">Completed</option>
+                  </select>
+
+                  <button type="submit" className="btn-action" style={{ borderRadius: '12px', padding: '0.5rem 1.2rem', flexShrink: 0 }}>+ Add Task</button>
                 </form>
                 <div className="kanban-grid">
                   {["todo", "progress", "done"].map(status => (
@@ -368,7 +428,10 @@ export default function TeamDashboard() {
                       <span className="column-header-text">{status === "todo" ? "To Do" : status === "progress" ? "In Progress" : "Completed Node"}</span>
                       {tasks.filter(t => t.status === status).map(task => (
                         <div className="task-card-node" key={task.id} onClick={() => moveTask(task.id, status)}>
-                          <p>{task.text}</p>
+                          <div className="task-card-header">
+                            <p>{task.text}</p>
+                            <button className="task-delete-trigger" onClick={(e) => handleDeleteTask(e, task.id)}>✕</button>
+                          </div>
                           <div style={{ fontSize: '0.65rem', color: 'var(--teal)', marginTop: '0.5rem', textAlign: 'right', fontWeight: 600 }}>➔ Shift State</div>
                         </div>
                       ))}
@@ -377,13 +440,17 @@ export default function TeamDashboard() {
                 </div>
               </div>
 
+              {/* 🔥 SYNERGY COMMUNICATIONS ARRAY */}
               <div className="bento-card span-12">
                 <div className="chat-panel">
                   <span className="card-label" style={{ color: 'var(--violet)' }}>Synergy Communications Array</span>
-                  <div className="chat-scroller" style={{ height: '140px' }}>
-                    {chatMessages.map(msg => (
-                      <div key={msg.id}>
-                        <div className="msg-meta"><span style={{ color: 'var(--gold)' }}>{msg.user}</span><span>{msg.time}</span></div>
+                  <div className="chat-scroller" ref={chatScrollerRef}>
+                    {chatMessages.map((msg, index) => (
+                      <div key={msg.id || index}>
+                        <div className="msg-meta">
+                          <span style={{ color: 'var(--gold)' }}>{msg.user}</span>
+                          <span>{msg.time}</span>
+                        </div>
                         <div className="msg-bubble">{msg.text}</div>
                       </div>
                     ))}

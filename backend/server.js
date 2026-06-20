@@ -6,6 +6,8 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const profileRoutes = require('./routes/profile'); 
 const teamRoutes = require('./routes/team'); 
+// 🔥 FIX LAYER 1: Chat router file ko import kiya
+const chatRoutes = require('./routes/chat'); 
 
 const app = express();
 
@@ -17,6 +19,8 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);     
 app.use('/api/profile', profileRoutes); 
 app.use('/api/team', teamRoutes);       
+// 🔥 FIX LAYER 2: Chat middleware route register kiya taaki 404 band ho jaye
+app.use('/api/chat', chatRoutes);       
 
 // MongoDB baseline connection vector
 mongoose.connect(process.env.MONGO_URI)

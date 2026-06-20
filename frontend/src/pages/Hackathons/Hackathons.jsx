@@ -40,9 +40,12 @@ export default function App() {
   const [registeredTeams, setRegisteredTeams] = useState({}); // { hackathonId: teamName }
   const [teamNameInput, setTeamNameInput] = useState('');
   const [toasts, setToasts] = useState([]);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [newH, setNewH] = useState({ title: '', location: '', teamSize: '', prize: '', description: '' });
 
   // Toast triggers
   const triggerToast = (message, type = 'success') => {
+
     const id = Date.now();
     setToasts((prev) => [...prev, { id, message, type }]);
     setTimeout(() => {
@@ -51,6 +54,7 @@ export default function App() {
   };
 
   const handleRegister = (hackathonId, title) => {
+  
     if (!teamNameInput.trim()) {
       triggerToast('Please enter a team name', 'error');
       return;
@@ -60,6 +64,7 @@ export default function App() {
     setIsRegistering(false);
     triggerToast(`Successfully registered for ${title}!`, 'success');
   };
+   
 
   const handleUnregister = (hackathonId, title) => {
     setRegisteredTeams(prev => {
@@ -69,6 +74,12 @@ export default function App() {
     });
     triggerToast(`Cancelled registration for ${title}.`, 'info');
   };
+  const handleAddNewHackathon = () => {
+  if(!newH.title || !newH.description) return triggerToast('Title & Description required', 'error');
+  const hackathonsDataCopy = [...hackathonsData, { ...newH, id: Date.now(), date: 'TBD', category: 'General', status: 'Online', gradient: 'from-[#7C3AED] via-[#EC4899] to-[#FF6B35]', badgeColor: 'bg-[#7C3AED]/10 text-[#C084FC] border-[#7C3AED]/20', iconColor: 'text-[#7C3AED]' }];
+  setIsAddModalOpen(false);
+  triggerToast('Hackathon Added to Matrix!');
+};
 
   // Static Hackathons Data
   const hackathonsData = [
@@ -368,6 +379,14 @@ export default function App() {
           <p className="text-[#94A3B8] text-sm md:text-base mt-3 font-medium tracking-wide">
             Discover and join exciting hackathons around the world.
           </p>
+          {/* Header ke andar yahan button daal do */}
+          <button 
+          onClick={() => setIsAddModalOpen(true)}
+          className="bg-gradient-to-r from-[#d4a843] to-[#e8823a] text-black px-6 py-2 rounded-full text-sm font-bold hover:opacity-90 transition-all"
+          >
+        
+         + Add Hackathon
+          </button>
         </header>
 
         {/* Filter and Control Row */}
@@ -823,7 +842,24 @@ export default function App() {
           </div>
         </div>
       )}
-
+      {isAddModalOpen && (
+  <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
+    <div className="bg-[#090D22] border border-[#333] p-8 rounded-2xl w-full max-w-md shadow-2xl">
+      <h2 className="text-xl font-bold mb-6 text-white">Add New Hackathon</h2>
+      <input className="w-full bg-[#0B0F23] p-3 mb-3 rounded-xl border border-[#1F233B] text-sm text-white" placeholder="Title" onChange={(e) => setNewH({...newH, title: e.target.value})} />
+      <input className="w-full bg-[#0B0F23] p-3 mb-3 rounded-xl border border-[#1F233B] text-sm text-white" placeholder="Location" onChange={(e) => setNewH({...newH, location: e.target.value})} />
+      <textarea className="w-full bg-[#0B0F23] p-3 mb-6 rounded-xl border border-[#1F233B] text-sm text-white" placeholder="Description" onChange={(e) => setNewH({...newH, description: e.target.value})} />
+      <div className="flex gap-3">
+        <button className="flex-1 bg-[#d4a843] text-black py-3 rounded-xl font-bold text-sm" onClick={() => {
+           // Yahan tumhara API call wala logic aayega
+           setIsAddModalOpen(false);
+           triggerToast('Hackathon Added!');
+        }}>Save to Matrix</button>
+        <button className="flex-1 bg-[#1F233B] text-white py-3 rounded-xl font-bold text-sm" onClick={() => setIsAddModalOpen(false)}>Cancel</button>
+      </div>
+    </div>
+  </div>
+)}
       {/* Dynamic alerts */}
       <div className="fixed bottom-6 right-6 z-50 flex flex-col space-y-2 max-w-md pointer-events-none">
         {toasts.map((toast) => (

@@ -80,7 +80,6 @@ export default function TeamChat() {
   };
 
   return (
-    // ✅ FIXED: Rigid top offset bypasses your fixed global navbar perfectly
     <div 
       style={{ 
         position: 'fixed', 
@@ -104,20 +103,35 @@ export default function TeamChat() {
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fraunces:wght@700&family=Space+Grotesk:wght@500;700&display=swap');
         
         .premium-grid-bg { position: absolute; inset: 0; background-size: 60px 60px; background-image: linear-gradient(rgba(245,240,232,0.012) 1px,transparent 1px),linear-gradient(90deg,rgba(245,240,232,0.012) 1px,transparent 1px); pointer-events: none; z-index: 0; }
-        .workspace-deck { display: flex; gap: 24px; max-width: 1340px; width: 100%; margin: 0 auto; padding: 20px; height: 100%; box-sizing: border-box; position: relative; z-index: 10; overflow: hidden; text-align: left; }
+        
+        /* 💻 DEFAULT LAPTOP ROW VIEW MAINTAINED SAFELY */
+        .workspace-deck { display: flex; flex-direction: row; gap: 24px; max-width: 1340px; width: 100%; margin: 0 auto; padding: 20px; height: 100%; box-sizing: border-box; position: relative; z-index: 10; overflow: hidden; text-align: left; }
         
         .squad-sidebar { width: 300px; background: rgba(245,240,232,0.01); border: 1px solid rgba(245,240,232,0.05); border-radius: 24px; display: flex; flex-direction: column; height: 100%; overflow: hidden; box-sizing: border-box; flex-shrink: 0; backdrop-filter: blur(20px); }
         .chat-console { flex: 1; background: rgba(245,240,232,0.01); border: 1px solid rgba(245,240,232,0.05); border-radius: 24px; display: flex; flex-direction: column; overflow: hidden; height: 100%; box-sizing: border-box; justify-content: space-between; backdrop-filter: blur(20px); }
         
-        /* Local scroll container explicitly bypasses App.css hidden states */
         .stream-scroller { flex: 1; overflow-y: auto !important; padding: 24px; display: flex; flex-direction: column; gap: 16px; min-height: 0; box-sizing: border-box; }
         .message-bubble { max-width: 70%; padding: 12px 18px; border-radius: 18px; font-size: 14px; font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.4; word-break: break-word; }
         .bubble-own { background: linear-gradient(135deg, #d4a843, #e8823a); color: #0a0a0f; align-self: flex-end; border-top-right-radius: 0; font-weight: 600; }
         .bubble-mate { background: rgba(245,240,232,0.02); border: 1px solid rgba(245,240,232,0.06); color: #f5f0e8; align-self: flex-start; border-top-left-radius: 0; }
         
         .input-bar-form-wrapper { padding: 18px 24px; background: rgba(5,8,22,0.95); border-top: 1px solid rgba(245,240,232,0.05); display: flex; align-items: center; gap: 16px; box-sizing: border-box; height: 80px; flex-shrink: 0; width: 100%; margin-top: auto; }
+        
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-thumb { background: rgba(245,240,232,0.08); border-radius: 10px; }
+
+        /* 📱 RESPONSIVE BREAKPOINTS ONLY TRIGGERED ON MOBILE VIEW */
+        @media (max-width: 768px) {
+          .workspace-deck { flex-direction: column !important; padding: 10px !important; gap: 12px !important; }
+          .squad-sidebar { width: 100% !important; height: 110px !important; border-radius: 16px !important; }
+          .squad-sidebar-content-box { display: flex !important; flex-direction: row !important; overflow-x: auto !important; padding: 8px 12px !important; gap: 12px !important; }
+          .sidebar-header-title, .user-node-active-status { display: none !important; }
+          .active-member-node-card { margin-bottom: 0 !important; width: 180px !important; flex-shrink: 0 !important; }
+          .chat-console { border-radius: 16px !important; height: calc(100% - 122px) !important; }
+          .stream-scroller { padding: 16px !important; gap: 12px !important; }
+          .message-bubble { max-width: 85% !important; font-size: 13px !important; padding: 10px 14px !important; }
+          .input-bar-form-wrapper { padding: 12px 16px !important; height: 68px !important; gap: 10px !important; }
+        }
       `}</style>
 
       <div className="premium-grid-bg" />
@@ -125,12 +139,12 @@ export default function TeamChat() {
       <main className="workspace-deck">
         {/* Left Sidebar Frame */}
         <aside className="squad-sidebar">
-          <div style={{ padding: '18px 20px', borderBottom: '1px solid rgba(245,240,232,0.05)' }}>
+          <div className="sidebar-header-title" style={{ padding: '18px 20px', borderBottom: '1px solid rgba(245,240,232,0.05)' }}>
             <span style={{ fontFamily: 'Space Grotesk', fontSize: '12px', fontWeight: 'bold', letterSpacing: '0.12em', color: '#d4a843', textTransform: 'uppercase' }}>Messages</span>
           </div>
 
-          <div style={{ padding: '16px 20px', background: 'rgba(212,168,67,0.02)', borderBottom: '1px solid rgba(245,240,232,0.05)', display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ width: '36px', height: '36px', borderRadius: '12px', background: 'linear-gradient(135deg, #d4a843, #e8823a)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#0a0a0f', fontSize: '13px', fontFamily: 'Fraunces', textAlign: 'center', lineHeight: '36px' }}>
+          <div className="user-node-active-status" style={{ padding: '16px 20px', background: 'rgba(212,168,67,0.02)', borderBottom: '1px solid rgba(245,240,232,0.05)', display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '12px', background: 'linear-gradient(135deg, #d4a843, #e8823a)', display: 'flex', alignItems: 'center', justifycontent: 'center', fontWeight: 'bold', color: '#0a0a0f', fontSize: '13px', fontFamily: 'Fraunces', textAlign: 'center', lineheight: '36px' }}>
               {currentUserName[0].toUpperCase()}
             </div>
             <div style={{ minWidth: 0, flex: 1 }}>
@@ -139,19 +153,19 @@ export default function TeamChat() {
             </div>
           </div>
 
-          <div style={{ padding: '12px 20px 6px' }}>
+          <div className="sidebar-header-title" style={{ padding: '12px 20px 6px' }}>
             <span style={{ fontFamily: 'Space Grotesk', fontSize: '10px', fontWeight: 'bold', letterSpacing: '0.08em', color: 'rgba(245,240,232,0.4)', textTransform: 'uppercase' }}>Active Channels</span>
           </div>
 
-          <div style={{ flex: 1, overflowY: 'auto', padding: '0 12px 12px' }}>
+          <div className="squad-sidebar-content-box" style={{ flex: 1, overflowY: 'auto', padding: '0 12px 12px' }}>
             {activeUsers.map((user, idx) => (
-              <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px', borderRadius: '16px', background: 'rgba(245,240,232,0.01)', border: '1px solid rgba(245,240,232,0.03)', marginBottom: '8px' }}>
-                <div style={{ width: '36px', height: '36px', borderRadius: '12px', backgroundColor: 'rgba(245,240,232,0.03)', border: '1px solid rgba(245,240,232,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#2ec4b6', fontFamily: 'Fraunces' }}>
+              <div className="active-member-node-card" key={idx} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px', borderRadius: '16px', background: 'rgba(245,240,232,0.01)', border: '1px solid rgba(245,240,232,0.03)', marginBottom: '8px' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '12px', backgroundColor: 'rgba(245,240,232,0.03)', border: '1px solid rgba(245,240,232,0.1)', display: 'flex', alignItems: 'center', justifycontent: 'center', fontWeight: 'bold', color: '#2ec4b6', fontFamily: 'Fraunces', flexShrink: 0 }}>
                   {user.name ? user.name[0].toUpperCase() : 'H'}
                 </div>
                 <div style={{ minWidth: 0, flex: 1 }}>
                   <p style={{ margin: 0, fontSize: '13px', fontWeight: '600', color: '#f5f0e8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user.name}</p>
-                  <span style={{ fontSize: '10px', color: 'rgba(245,240,232,0.4)', fontWeight: '500' }}>{user.role}</span>
+                  <span style={{ fontSize: '10px', color: 'rgba(245,240,232,0.4)', fontWeight: '500', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{user.role}</span>
                 </div>
               </div>
             ))}
@@ -186,7 +200,7 @@ export default function TeamChat() {
               onChange={(e) => setInputValue(e.target.value)}
               style={{ flex: 1, backgroundColor: 'rgba(245,240,232,0.03)', border: '1px solid rgba(245,240,232,0.08)', color: '#f5f0e8', padding: '14px 20px', borderRadius: '14px', fontSize: '13px', outline: 'none', fontFamily: 'Plus Jakarta Sans' }} 
             />
-            <button type="submit" disabled={!inputValue.trim()} style={{ padding: '12px 18px', border: 'none', borderRadius: '100px', background: inputValue.trim() ? 'linear-gradient(135deg, #d4a843, #e8823a)' : 'rgba(245,240,232,0.04)', cursor: inputValue.trim() ? 'pointer' : 'not-allowed', display: 'flex', alignItems: 'center', transition: '0.2s' }}>
+            <button type="submit" disabled={!inputValue.trim()} style={{ padding: '12px 18px', border: 'none', borderRadius: '100px', background: inputValue.trim() ? 'linear-gradient(135deg, #d4a843, #e8823a)' : 'rgba(245,240,232,0.04)', cursor: inputValue.trim() ? 'pointer' : 'not-allowed', display: 'flex', alignItems: 'center', transition: '0.2s', flexShrink: 0 }}>
               <SendIcon />
             </button>
           </form>

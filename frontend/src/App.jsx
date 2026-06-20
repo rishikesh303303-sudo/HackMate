@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+
+// Pages
 import Landing from './pages/Landing';
 import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
@@ -13,11 +15,13 @@ import Notifications from './pages/Notifications/Notifications';
 import TeamChat from './pages/Chat/TeamChat'; 
 import Settings from './pages/Settings/Settings';
 
+// Components
 import Navbar from './components/Navbar';
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
   
+  // Navbar ko sirf Landing (/) aur Auth (/auth) par hide rakha hai
   const hideNavbarOn = ['/', '/auth'];
   const shouldHideNavbar = hideNavbarOn.includes(location.pathname);
 
@@ -38,18 +42,23 @@ export default function App() {
         <Router>
           <LayoutWrapper>
             <Routes>
+              {/* Public Routes */}
               <Route path="/" element={<Landing />} />
               <Route path="/auth" element={<Auth />} />
+
+              {/* Protected Workspace Routes */}
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/team-dashboard" element={<TeamDashboard />} />
               <Route path="/find-team" element={<FindTeam />} />
               <Route path="/profile" element={<Profile />} />
 
+              {/* Ecosystem Routes */}
               <Route path="/hackathons" element={<Hackathons />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/chat" element={<TeamChat />} /> 
               <Route path="/settings" element={<Settings />} />
 
+              {/* Fallback Redirect */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </LayoutWrapper>
